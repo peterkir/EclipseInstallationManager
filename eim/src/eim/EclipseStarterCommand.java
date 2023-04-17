@@ -15,7 +15,7 @@ public class EclipseStarterCommand {
 	}
 
 	public void startProcess(String command, String workingDir, String[] args) {
-		System.out.println("Hello");
+		System.out.println("Executing " + command);
 		eclService.startProcess(command, workingDir, args);
 	}
 }
