@@ -30,11 +30,11 @@
 cache=${.}/cache
 
 # eclipse release details
-eclipse.version          = 4.27
-eclipse.name             = 2023-03
-eclipse.platform.version = R-4.27-202303020300
+eclipse.version          = 4.24
+eclipse.name             = 2022-06
+eclipse.platform.version = R-4.24-202206070700
 eclipse.url              = https://download.eclipse.org
-eclipse.simu.version     = 202303151000
+eclipse.simu.version     = 202206151000
 
 # Eclipse Platform release 
 eclipse.platform.baseurl = ${eclipse.url}/eclipse/updates

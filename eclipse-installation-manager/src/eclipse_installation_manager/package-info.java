@@ -1,1 +1,0 @@
-package eclipse_installation_manager;
