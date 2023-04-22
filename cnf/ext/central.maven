@@ -1,0 +1,7 @@
+# List repository contents using GAV coordinates
+
+
+# Testings
+org.junit.jupiter:junit-jupiter:5.9.2
+org.junit.jupiter:junit-jupiter-api:5.9.2
+org.mockito:mockito-all:2.0.2-beta
