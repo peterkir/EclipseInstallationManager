@@ -1,10 +1,13 @@
-package eim;
+package impl;
+
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+
+import eim.api.EclipseService;
 
 /**
  * This class controls all aspects of the application's execution

@@ -1,10 +1,14 @@
 -buildpath: \
-    osgi.core,\
-    osgi.cmpn,\
-    osgi.annotation,\
-    org.eclipse.equinox.app
+	osgi.core,\
+	osgi.cmpn,\
+	osgi.annotation,\
+	org.eclipse.equinox.app,\
+	eim.api;version=latest,\
+	org.apache.felix.gogo.runtime
     
 -includeresource: ./root/
 
 Bundle-Version: 0.1.0.${tstamp;yyyyMMdd-HHmmss}
-Export-Package: eim
+-runrequires: bnd.identity;id='eim.api'
+
+-sub: *.bnd
