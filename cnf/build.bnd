@@ -1,4 +1,5 @@
 #Configure Repositories
+
 -plugin.1.Local: \
     aQute.bnd.deployer.repository.LocalIndexedRepo; \
         name = Local; \

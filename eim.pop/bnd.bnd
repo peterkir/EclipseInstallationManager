@@ -12,7 +12,9 @@ Import-Package: org.osgi.framework.*;version="[1.8,2)",*
 	osgi.core;version='7.0.0',\
 	osgi.cmpn;version='7.0.0',\
 	org.junit,\
-	org.mockito.mockito-core
+	org.mockito.mockito-core,\
+	org.knowhowlab.osgi.testing.all,\
+	eim.api;version=latest
 
 -dependson: \
     eim

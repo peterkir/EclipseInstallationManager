@@ -24,4 +24,4 @@ jobs:
       name: Build docker image and push to docker hub
       id: script
       run: |
-        /bin/bash ${GITHUB_WORKSPACE}/build.sh
+        /bin/bash ${GITHUB_WORKSPACE}/buildAndTest.sh
