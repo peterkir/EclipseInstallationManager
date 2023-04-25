@@ -16,7 +16,7 @@ import eim.api.EclipseService;
 public class EclipseServiceImpl implements EclipseService {
 
 	@Override
-	public void startProcess(String command, String workingDir, String[] args) {
+	public Process startProcess(String command, String workingDir, String[] args) {
 		ProcessBuilder pb = new ProcessBuilder(command);
 		if (workingDir != null) {
 			pb.directory(Paths.get(workingDir).toFile());
@@ -31,9 +31,10 @@ public class EclipseServiceImpl implements EclipseService {
 			}
 		}
 		try {
-			pb.start();
+			return pb.start();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 	}

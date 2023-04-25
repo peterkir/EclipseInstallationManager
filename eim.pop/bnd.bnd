@@ -14,7 +14,8 @@ Import-Package: org.osgi.framework.*;version="[1.8,2)",*
 	org.junit,\
 	org.mockito.mockito-core,\
 	org.knowhowlab.osgi.testing.all,\
-	eim.api;version=latest
+	eim.api;version=latest,\
+	org.eclipse.e4.core.di.annotations
 
 -dependson: \
     eim

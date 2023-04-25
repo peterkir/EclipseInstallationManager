@@ -1,4 +1,4 @@
-name: 'Build and publish to Docker Hub'
+name: 'Build and Test Eclipse Installation Manager'
 
 env:
    NAME: "klibio/example.bnd.rcp:"
