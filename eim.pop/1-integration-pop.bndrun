@@ -16,9 +16,7 @@
 	org.apache.felix.scr;version='[2.1.24,2.1.25)',\
 	org.apiguardian.api;version='[1.1.2,1.1.3)',\
 	org.eclipse.osgi.services;version='[3.10.200,3.10.201)',\
+	org.knowhowlab.osgi.testing.all;version='[1.3.0,1.3.1)',\
 	org.opentest4j;version='[1.2.0,1.2.1)',\
 	org.osgi.util.function;version='[1.2.0,1.2.1)',\
-	org.osgi.util.promise;version='[1.2.0,1.2.1)',\
-	org.hamcrest.core;version='[1.3.0,1.3.1)',\
-	org.junit;version='[4.13.2,4.13.3)',\
-	org.knowhowlab.osgi.testing.all;version='[1.3.0,1.3.1)'
+	org.osgi.util.promise;version='[1.2.0,1.2.1)'
