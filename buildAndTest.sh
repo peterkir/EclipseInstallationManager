@@ -5,8 +5,6 @@ SCRIPT=$(readlink -f "$0")
 SCRIPT_DIR=$(dirname "$SCRIPT")
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klibio/bootstrap/main/install-klibio.sh)" bash -j
-source ~/.klibio/klibio.sh
-set-java.sh 17
 
 ./gradlew \
     --info \
