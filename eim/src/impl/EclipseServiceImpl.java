@@ -22,8 +22,12 @@ public class EclipseServiceImpl implements EclipseService {
 			pb.directory(Paths.get(workingDir).toFile());
 		}
 		Map<String, String> env = pb.environment();
-		env.put("TEMP", System.getenv("TEMP"));
-		env.put("SYSTEMDRIVE", System.getenv("SYSTEMDRIVE"));
+		
+		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+			env.put("TEMP", System.getenv("TEMP"));
+			env.put("SYSTEMDRIVE", System.getenv("SYSTEMDRIVE"));
+		}
+		
 		if (args != null) {
 			for (String string : args) {
 				String[] argument = string.split("=");
