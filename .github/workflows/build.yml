@@ -22,5 +22,6 @@ jobs:
       id: script
       run: |
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klibio/bootstrap/main/install-klibio.sh)" bash -j
+        ~ .klibio.sh
         set-Java.sh 17
         /bin/bash ${GITHUB_WORKSPACE}/buildAndTest.sh
