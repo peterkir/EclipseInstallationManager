@@ -1,8 +1,5 @@
 name: 'Build and Test Eclipse Installation Manager'
 
-env:
-   NAME: "klibio/example.bnd.rcp:"
-
 on:
   workflow_dispatch:
   push:
