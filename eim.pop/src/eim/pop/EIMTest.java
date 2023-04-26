@@ -89,7 +89,7 @@ public class EIMTest {
 		Pattern pattern = Pattern.compile("^([0-9]+)@.+$", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(processName);
 		if (matcher.matches()) {
-			result = new Long(Long.parseLong(matcher.group(1)));
+			result = Long.valueOf(matcher.group(1));
 		}
 		return result;
 	}
