@@ -12,7 +12,7 @@
 
 -runstorage: rt
 
--runvm.coverage: -javaagent:${repo;org.jacoco:org.jacoco.agent:jar:runtime;latest}=destfile=1-integration-pop_jacoco.exec
+-runvm.coverage: -javaagent:${repo;org.jacoco:org.jacoco.agent:jar:runtime;latest}=destfile=${replace;${workspace};(\\\\);/}/eim.pop/jacoco/exec/1-integration-pop_jacoco.exec
 
 -runproperties.continuos-test: \
     tester.continuous=false,\

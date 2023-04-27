@@ -1,7 +1,7 @@
 package eim.pop;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.knowhowlab.osgi.testing.assertions.BundleAssert.assertBundleState;
 import static org.knowhowlab.osgi.testing.assertions.OSGiAssert.getBundleContext;
 import static org.knowhowlab.osgi.testing.assertions.ServiceAssert.assertServiceAvailable;
@@ -26,22 +26,21 @@ import org.osgi.framework.FrameworkUtil;
 import eim.api.EclipseService;
 
 public class EIMTest {
-	
+
 	private final String SERVICE_BUNDLE = "eim.impl";
 	private final BundleContext context = FrameworkUtil.getBundle(EIMTest.class).getBundleContext();
 	private static String command;
-	
+
 	@BeforeAll
 	public static void setUp() {
 		String os = System.getProperty("os.name").toLowerCase();
-		if(os.contains("windows")) {
-			command="C:/Windows/System32/notepad.exe";
+		if (os.contains("windows")) {
+			command = "C:/Windows/System32/notepad.exe";
 		} else {
-			command="/bin/bash";
+			command = "/bin/bash";
 		}
 	}
-	
-	
+
 	@Test
 	public void testLifeCycle() throws Exception {
 		assertBundleState(Bundle.ACTIVE, SERVICE_BUNDLE);
@@ -52,25 +51,26 @@ public class EIMTest {
 		EclipseService eclService = ServiceUtils.getService(context, EclipseService.class);
 		assertNotNull(eclService);
 	}
-	
+
 	@Test
 	public void testStartProcess() {
 		EclipseService eclService = ServiceUtils.getService(context, EclipseService.class);
-		Process p = eclService.startProcess(command, System.getProperty("user.home"), null);
+		String workingDir = System.getProperty("user.home");
+		System.out.format("#DEBUG-TEST# launching process %s in working dir %s\n", command, workingDir);
+		Process p = eclService.startProcess(command, workingDir, null);
+		System.out.println("#DEBUG-TEST# process info: " + p.info());
 		long parentPID = getPidViaRuntimeMXBean();
 		long pid = p.pid();
-		
+
 		Optional<ProcessHandle> processHandle = ProcessHandle.of(parentPID);
 		processHandle.ifPresent(process -> {
 			process.children().forEach(child -> {
-				assertEquals(pid, child.pid());
+				System.out.format("#DEBUG-TEST# child-process %s # info %s\n", child.pid(), child.info());
 			});
+			assertTrue(process.children().filter(c -> pid == c.pid()).findFirst().isPresent());
 		});
-		
-		
-		
 	}
-	
+
 	@AfterAll
 	public static void cleanUp() {
 		long parentPID = getPidViaRuntimeMXBean();
@@ -81,7 +81,7 @@ public class EIMTest {
 			});
 		});
 	}
-	
+
 	private static Long getPidViaRuntimeMXBean() {
 		RuntimeMXBean rtb = ManagementFactory.getRuntimeMXBean();
 		String processName = rtb.getName();
@@ -91,6 +91,7 @@ public class EIMTest {
 		if (matcher.matches()) {
 			result = Long.valueOf(matcher.group(1));
 		}
+		System.out.format("#DEBUG-TEST# getPidViaRuntimeMXBean() process %s with pid %s\n", processName, result);
 		return result;
 	}
 

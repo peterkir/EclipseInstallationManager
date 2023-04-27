@@ -1,28 +1,29 @@
 set -Eeuo pipefail
 
-SCRIPT_DIR="$( cd $( dirname ${BASH_SOURCE[0]} ) >/dev/null 2>&1 && pwd )" &&
-  echo $SCRIPT_DIR && \
-  pushd $SCRIPT_DIR/../..
+script_dir=$(dirname $(readlink -f $0))
+workspace_dir=$(cd "${script_dir}/../.."; pwd)
+jacoco_dir=$(cd "${workspace_dir}/eim.pop/jacoco"; pwd)
 
-SOURCES=$SCRIPT_DIR/sources
-CLASSES=$SCRIPT_DIR/classes
-mkdir -p $SOURCES
-mkdir -p $CLASSES
+source_files=${jacoco_dir}/rt/source_files
+class_files=${jacoco_dir}/rt/class_files
+mkdir -p ${source_files}
+mkdir -p ${class_files}
 
-cp -R eim/src \
-      $SOURCES
+find . -iname "src" \
+  ! -path "*/generated/*" \
+  ! -path "*/jacoco/*" \
+  -type d \
+  -exec cp -R {} ${source_files} \;
 
-cp -R eim/bin \
-      $CLASSES
+cp -R ${workspace_dir}/eim/generated/classes \
+      ${class_files}
 
-popd
-
-mkdir -p $SCRIPT_DIR/reports
-java -jar  $SCRIPT_DIR/jacococli.jar \
-    report $SCRIPT_DIR/../generated/tmp/testrun.1-integration-pop/1-integration-pop_jacoco.exec \
-    --sourcefiles ${SOURCES}/src \
-    --classfiles ${CLASSES} \
+mkdir -p ${script_dir}/reports
+java -jar  ${script_dir}/jacococli.jar \
+    report ${jacoco_dir}/exec/1-integration-pop_jacoco.exec \
+    --sourcefiles ${source_files}/src \
+    --classfiles ${class_files} \
     --encoding UTF-8 \
-    --html $SCRIPT_DIR/reports \
+    --html ${jacoco_dir}/reports \
     --name "POP coverage for the Eclipse Installation Manager" \
-    --xml $SCRIPT_DIR/reports/1-integration-pop_jacoco.xml
+    --xml ${jacoco_dir}/reports/1-integration-pop_jacoco.xml
