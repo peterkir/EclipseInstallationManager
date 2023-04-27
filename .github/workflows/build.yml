@@ -21,4 +21,4 @@ jobs:
       name: Build application, run tests and create coverage reports
       id: script
       run: |
-        /bin/bash ${GITHUB_WORKSPACE}/buildAndTest.sh
+        /bin/bash ${{ github.workspace }}/buildAndTest.sh
