@@ -15,8 +15,10 @@ find . -iname "src" \
   -type d \
   -exec cp -R {} ${source_files} \;
 
-cp -R ${workspace_dir}/eim/generated/classes \
-      ${class_files}
+find . -iname "classes" \
+  ! -path "*/jacoco/*" \
+  -type d \
+  -exec cp -R {} ${class_files} \;
 
 mkdir -p ${script_dir}/reports
 java -jar  ${script_dir}/jacococli.jar \
