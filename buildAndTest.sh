@@ -8,7 +8,7 @@ if [[ -z ${KLIBIO+x} ]]; then
   echo "providing klibio"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/klibio/bootstrap/main/install-klibio.sh)" bash -j
   . ~/.klibio/klibio.sh
-  set-java.sh 17
+  . set-java.sh 17
 fi
 
 echo "using JAVA_HOME=$JAVA_HOME"
