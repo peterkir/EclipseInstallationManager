@@ -15,7 +15,7 @@ if [[ ${branch} = "main" ]]; then
         --title "Eclipse Installation Manager (EIM) v${version}" \
         --generate-notes \
         ${GITHUB_WORKSPACE}/eim/generated/distributions/executable/eim.jar \
-        ${GITHUB_WORKSPACE}/eim.api/generated/distributions/executable/eim.api.jar
+        ${GITHUB_WORKSPACE}/eim.api/generated/eim.api.jar
 else
     echo "# Skipping release because the branch is not main"
 fi
