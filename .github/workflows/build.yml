@@ -1,7 +1,4 @@
-name: 'Build and publish to Docker Hub'
-
-env:
-   NAME: "klibio/example.bnd.rcp:"
+name: 'Build and Test Eclipse Installation Manager'
 
 on:
   workflow_dispatch:
@@ -21,7 +18,7 @@ jobs:
        with:
         fetch-depth: 1
      - 
-      name: Build docker image and push to docker hub
+      name: Build application, run tests and create coverage reports
       id: script
       run: |
-        /bin/bash ${GITHUB_WORKSPACE}/build.sh
+        /bin/bash ${GITHUB_WORKSPACE}/buildAndTest.sh

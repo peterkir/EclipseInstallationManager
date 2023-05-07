@@ -16,14 +16,18 @@ import eim.api.EclipseService;
 public class EclipseServiceImpl implements EclipseService {
 
 	@Override
-	public void startProcess(String command, String workingDir, String[] args) {
+	public Process startProcess(String command, String workingDir, String[] args) {
 		ProcessBuilder pb = new ProcessBuilder(command);
 		if (workingDir != null) {
 			pb.directory(Paths.get(workingDir).toFile());
 		}
 		Map<String, String> env = pb.environment();
-		env.put("TEMP", System.getenv("TEMP"));
-		env.put("SYSTEMDRIVE", System.getenv("SYSTEMDRIVE"));
+		
+		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+			env.put("TEMP", System.getenv("TEMP"));
+			env.put("SYSTEMDRIVE", System.getenv("SYSTEMDRIVE"));
+		}
+		
 		if (args != null) {
 			for (String string : args) {
 				String[] argument = string.split("=");
@@ -31,9 +35,10 @@ public class EclipseServiceImpl implements EclipseService {
 			}
 		}
 		try {
-			pb.start();
+			return pb.start();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 	}
