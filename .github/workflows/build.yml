@@ -25,6 +25,8 @@ jobs:
         /bin/bash ${{ github.workspace }}/buildAndTest.sh
      -
       name: Create release and upload artifacts to release
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         export GITHUB_WORKSPACE=${{ github.workspace }}
         /bin/bash ${{ github.workspace }}/createReleaseAndArtifacts.sh
