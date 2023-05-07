@@ -21,4 +21,8 @@ jobs:
       name: Build application, run tests and create coverage reports
       id: script
       run: |
-        /bin/bash ${GITHUB_WORKSPACE}/buildAndTest.sh
+        /bin/bash ${{ github.workspace }}/buildAndTest.sh
+     -
+      name: Create release and upload artifacts to release
+      run: |
+        /bin/bash ${{ github.workspace }}/createReleaseAndArtifacts.sh
