@@ -1,4 +1,4 @@
-#Configure Repositories
+# configure repositories
 -plugin.1.Local: \
     aQute.bnd.deployer.repository.LocalIndexedRepo; \
         name = Local; \
@@ -65,15 +65,27 @@ eclipse.simu.url         = "${eclipse.simu.baseurl}/${eclipse.name}/${eclipse.si
 #        name  = ${eclipse.simu.name}; \
 #        url   = ${eclipse.simu.url}
 
+# separate build folders for windows executions - file handle issues
+target-dir  generated${if;${driver;eclipse};;/${driver}}
+bin         ${target-dir}/classes
+testbin     ${target-dir}/test-classes
+  
+#-plugin.commands = \
+#   aQute.bnd.signing.JartoolSigner; \
+#       keystore=${workspace}/cnf/ext.jks; \
+#       storepass=${sign.storepass}; \
+#       keypass=${sign.keypass}; \
+#       digestalg=SHA-256
+
+#-sign: ${sign.alias}; keypass:=${sign.keypass}
+
 # JUnit
 junit: \
   junit-jupiter,\
   junit-jupiter-api
 mockito: org.mockito.mockito-all
 
+Bundle-Version:     0.1.0.${tstamp;"yyyyMMdd-HHmmss"}
 
-Bundle-Version:             0.1.0.${tstamp}
-
--remoteworkspace        true
--runfw:                 org.eclipse.osgi
--runee:                 JavaSE-17
+# https://bnd.bndtools.org/instructions/remoteworkspace.html
+-remoteworkspace    true

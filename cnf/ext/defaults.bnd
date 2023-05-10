@@ -6,8 +6,7 @@
     osgi.identity;filter:='(osgi.identity=biz.aQute.launcher)', \
     osgi.identity;filter:='(osgi.identity=biz.aQute.remote.launcher)', \
     osgi.identity;filter:='(osgi.identity=org.osgi.service.*)', \
-    osgi.identity;filter:='(osgi.identity=slf4j.*)', \
-
+    osgi.identity;filter:='(osgi.identity=slf4j.*)'
 
 -runsystemcapabilities.dflt:    ${native_capability}
 

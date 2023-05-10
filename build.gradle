@@ -1,3 +1,13 @@
+plugins {
+    id 'java'
+}
+
 tasks.named('wrapper') {
   jarFile = rootProject.file('.gradle-wrapper/gradle-wrapper.jar')
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
