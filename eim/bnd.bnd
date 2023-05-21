@@ -8,7 +8,7 @@
     
 -includeresource: ./root/
 
-Bundle-Version: 0.1.0.${tstamp;yyyyMMdd-HHmmss}
+Bundle-Version: 0.2.0.${tstamp;yyyyMMdd-HHmmss}
 -runrequires: bnd.identity;id='eim.api'
 
 -sub: *.bnd

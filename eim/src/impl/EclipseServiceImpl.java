@@ -3,6 +3,7 @@ package impl;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -17,7 +18,9 @@ public class EclipseServiceImpl implements EclipseService {
 
 	@Override
 	public Process startProcess(String command, String workingDir, String[] args) {
-		ProcessBuilder pb = new ProcessBuilder(command);
+		Map<String, String> arguments = new HashMap<String, String>();
+		
+		ProcessBuilder pb = new ProcessBuilder();
 		if (workingDir != null) {
 			pb.directory(Paths.get(workingDir).toFile());
 		}
@@ -32,7 +35,15 @@ public class EclipseServiceImpl implements EclipseService {
 			for (String string : args) {
 				String[] argument = string.split("=");
 				env.put(argument[0], argument[1]);
+				arguments.put(argument[0], argument[1]);
 			}
+		}
+		if (arguments.containsKey("ws")) {
+			pb.command(command,
+					"-data",
+					arguments.get("ws"));
+		} else {
+			pb.command(command);
 		}
 		try {
 			return pb.start();
