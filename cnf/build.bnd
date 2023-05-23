@@ -52,8 +52,7 @@ eclipse.platform.url     = "${eclipse.platform.baseurl}/${eclipse.version}/${ecl
 -plugin.10.eclipse.platform: \
     aQute.bnd.repository.p2.provider.P2Repository; \
         name  = ${eclipse.platform.name}; \
-        url   = ${eclipse.platform.url}; \
-        cache = ${cache}
+        url   = ${eclipse.platform.url}
 
 # Eclipse Simultaneous release 
 eclipse.simu.baseurl     = ${eclipse.url}/releases
@@ -65,6 +64,11 @@ eclipse.simu.url         = "${eclipse.simu.baseurl}/${eclipse.name}/${eclipse.si
 #    aQute.bnd.repository.p2.provider.P2Repository; \
 #        name  = ${eclipse.simu.name}; \
 #        url   = ${eclipse.simu.url}
+
+-plugin.11.oomph.platform: \
+    aQute.bnd.repository.p2.provider.P2Repository; \
+        name  = "Oomph 1.25"; \
+        url   = "https://download.eclipse.org/oomph/drops/release/1.25.0/"
 
 # JUnit
 junit: \
@@ -78,3 +82,5 @@ Bundle-Version:             0.1.0.${tstamp}
 -remoteworkspace        true
 -runfw:                 org.eclipse.osgi
 -runee:                 JavaSE-17
+
+
