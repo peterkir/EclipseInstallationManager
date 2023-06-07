@@ -1,6 +1,5 @@
 package command;
 
-
 import org.apache.felix.service.command.Descriptor;
 import org.osgi.annotation.versioning.ConsumerType;
 import org.osgi.service.component.annotations.Component;
@@ -8,7 +7,7 @@ import org.osgi.service.component.annotations.Reference;
 
 import eim.api.EclipseService;
 
-@Component(property = { "osgi.command.scope=zEMI",  
+@Component(property = { "osgi.command.scope=zEIM",  
 		"osgi.command.function=startProcess" }, service = EclipseStarterCommand.class)
 @ConsumerType
 public class EclipseStarterCommand {

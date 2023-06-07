@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.osgi.service.component.annotations.Component;
 
 import eim.api.EclipseService;
@@ -31,7 +30,7 @@ public class EclipseServiceImpl implements EclipseService {
 			env.put("SYSTEMDRIVE", System.getenv("SYSTEMDRIVE"));
 		}
 		
-		if (args != null) {
+		if (args != null && args.length > 0) {
 			for (String string : args) {
 				String[] argument = string.split("=");
 				env.put(argument[0], argument[1]);
@@ -53,4 +52,5 @@ public class EclipseServiceImpl implements EclipseService {
 		}
 
 	}
+		
 }

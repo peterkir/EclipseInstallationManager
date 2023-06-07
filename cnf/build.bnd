@@ -38,11 +38,11 @@
 cache=${.}/cache
 
 # eclipse release details
-eclipse.version          = 4.24
-eclipse.name             = 2022-06
-eclipse.platform.version = R-4.24-202206070700
+eclipse.version          = 4.27
+eclipse.name             = 2023-03
+eclipse.platform.version = R-4.27-202303020300
 eclipse.url              = https://download.eclipse.org
-eclipse.simu.version     = 202206151000
+eclipse.simu.version     = 202303151000
 
 # Eclipse Platform release 
 eclipse.platform.baseurl = ${eclipse.url}/eclipse/updates
@@ -55,9 +55,9 @@ eclipse.platform.url     = "${eclipse.platform.baseurl}/${eclipse.version}/${ecl
         url   = ${eclipse.platform.url}
 
 # Eclipse Simultaneous release 
-eclipse.simu.baseurl     = ${eclipse.url}/releases
-eclipse.simu.name        = "SimuRel_${eclipse.name}_${eclipse.simu.version}"
-eclipse.simu.url         = "${eclipse.simu.baseurl}/${eclipse.name}/${eclipse.simu.version}"
+#eclipse.simu.baseurl     = ${eclipse.url}/releases
+#eclipse.simu.name        = "SimuRel_${eclipse.name}_${eclipse.simu.version}"
+#eclipse.simu.url         = "${eclipse.simu.baseurl}/${eclipse.name}/${eclipse.simu.version}"
 
 # uncomment the following line to include the simultaneous release
 #-plugin.11.eclipse.simu: \
@@ -81,6 +81,6 @@ Bundle-Version:             0.1.0.${tstamp}
 
 -remoteworkspace        true
 -runfw:                 org.eclipse.osgi
--runee:                 JavaSE-17
+-runee:                 JavaSE-11
 
 

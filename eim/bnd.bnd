@@ -4,7 +4,13 @@
 	osgi.annotation,\
 	org.eclipse.equinox.app,\
 	eim.api;version=latest,\
-	org.apache.felix.gogo.runtime
+	org.apache.felix.gogo.runtime,\
+	org.eclipse.oomph.base,\
+	org.eclipse.oomph.base.edit,\
+	org.eclipse.oomph.setup,\
+	org.eclipse.oomph.setup.core,\
+	org.eclipse.emf.ecore,\
+	org.eclipse.emf.common
     
 -includeresource: ./root/
 
