@@ -21,8 +21,8 @@ if [[ ${branch} = "main" ]]; then
         --latest \
         --title "Eclipse Installation Manager (EIM) v${version}" \
         --generate-notes \
-        ${github_workspace}/eim/generated/distributions/executable/eim_${version}.jar \
-        ${github_workspace}/eim.api/generated/eim.api_${apiVersion}.jar
+        ${github_workspace}/eim/generated/gradle/distributions/executable/eim_${version}.jar \
+        ${github_workspace}/eim.api/generated/gradle/eim.api_${apiVersion}.jar
 else
     echo "# Skipping release because the branch is not main"
 fi
