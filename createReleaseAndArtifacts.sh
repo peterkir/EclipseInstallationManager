@@ -13,8 +13,8 @@ tag=v${version}
 branch=$(echo ${GITHUB_REF#refs/heads/})
 
 # rename jars to include the version
-mv ${github_workspace}/eim/generated/distributions/executable/eim.jar ${github_workspace}/eim/generated/distributions/executable/eim_${version}.jar
-mv ${github_workspace}/eim.api/generated/eim.api.jar ${github_workspace}/eim.api/generated/eim.api_${apiVersion}.jar
+mv ${github_workspace}/eim/generated/gradle/distributions/executable/eim.jar ${github_workspace}/eim/generated/gradle/distributions/executable/eim_${version}.jar
+mv ${github_workspace}/eim.api/generated/gradle/eim.api.jar ${github_workspace}/eim.api/generated/gradle/eim.api_${apiVersion}.jar
 
 if [[ ${branch} = "main" ]]; then
     gh release create ${tag}\
