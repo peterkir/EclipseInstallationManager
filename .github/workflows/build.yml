@@ -28,5 +28,5 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        export GITHUB_WORKSPACE=${{ github.workspace }}
+        export github_workspace=${{ github.workspace }}
         /bin/bash ${{ github.workspace }}/createReleaseAndArtifacts.sh
