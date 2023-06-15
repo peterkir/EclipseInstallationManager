@@ -8,8 +8,9 @@ import org.eclipse.oomph.util.Pair;
 import org.osgi.annotation.versioning.ProviderType;
 
 @ProviderType
-public interface EclipseService {
-	Process startProcess(String command, String workingDir, String[] args);
+public interface ListLocationService {
 	
-	void startEntry(Integer index, Map<Integer, Pair<Installation, Workspace>> executionEntries);
+	public void listLocations(String locationFile);
+	
+	public Map<Integer, Pair<Installation, Workspace>> getLocationEntries();
 }
