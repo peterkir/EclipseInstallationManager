@@ -1,7 +1,7 @@
 script_dir=$(dirname $(readlink -f $0))
 
 if [ "${CI}" = "true" ]; then
-  workspace_dir=$(cd "${script_dir}; pwd")
+  workspace_dir=$(cd "${script_dir}"; pwd)
 else
   workspace_dir=$(cd "${script_dir}/../.."; pwd)
 fi
