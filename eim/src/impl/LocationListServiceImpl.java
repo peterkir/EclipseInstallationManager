@@ -18,28 +18,39 @@ import org.eclipse.oomph.setup.LocationCatalog;
 import org.eclipse.oomph.setup.Workspace;
 import org.eclipse.oomph.setup.internal.core.util.SetupCoreUtil;
 import org.osgi.service.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eim.api.ListLocationService;
 import org.eclipse.oomph.util.Pair;
 
 @Component
 public class LocationListServiceImpl implements ListLocationService {
+	
+	private static Logger logger = LoggerFactory.getLogger(LocationListServiceImpl.class);
 	private Map<Integer, Pair<Installation, Workspace>> executionMap = new HashMap<>();
 
 	@Override
 	public void listLocations(String locationFile) {
 		File file;
 		if(locationFile == null || locationFile.isBlank()) {
+			logger.debug("Utilizing the default locations.setup file of the Eclipse Installer.");
 			String oomphhome = System.getProperty("user.home", System.getenv("HOME"))
 					.concat("/.eclipse/org.eclipse.oomph.setup");
 			String setupfile = oomphhome + "/setups/locations.setup";
 			file = new File(setupfile);
 		} else {
+			logger.debug("Loading locations catalog from " + locationFile);
 			file = new File(locationFile);
 		}
 		
 		// refresh map entries
-		fetchEntries(file);
+		try {
+			fetchEntries(file);
+		} catch (Exception e) {
+			logger.error("The given file " + locationFile + " is not a valid locationCatalog.\n Please check if that is the correct file!");
+			e.printStackTrace();
+		}
 		
 		//print map details
 		for (Map.Entry<Integer, Pair<Installation, Workspace>> entry : executionMap.entrySet()) {
@@ -59,17 +70,17 @@ public class LocationListServiceImpl implements ListLocationService {
 
 	private Resource loadLocationResource(File file) throws RuntimeException {
 		URI uri = URI.createFileURI(file.getAbsolutePath());
-		System.out.println("Loading EMF model " + uri);
+		logger.debug("Loading locations catalog from " + uri);
 
 		ResourceSet resourceSet = SetupCoreUtil.createResourceSet();
 
 		Resource resource = resourceSet.getResource(uri, true);
-		System.out.println("Loaded " + uri);
+		logger.debug("Loaded locations catalog from " + uri);
 		
 		return resource;
 	}
 
-	public void fetchEntries(File file) {
+	public void fetchEntries(File file) throws Exception {
 		Map<Integer, Pair<Installation, Workspace>> executionMapTemp = new HashMap<>();
 		try {
 			Resource resource = loadLocationResource(file);
@@ -97,7 +108,7 @@ public class LocationListServiceImpl implements ListLocationService {
 					}
 					executionMap = executionMapTemp;
 				} else {
-					System.out.println("The given file is not a LocationCatalog");
+					throw new Exception("The given file is not a LocationCatalog!");
 				}
 			}
 			

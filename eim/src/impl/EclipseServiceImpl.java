@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import org.eclipse.oomph.setup.Installation;
 import org.eclipse.oomph.setup.Workspace;
 import org.eclipse.oomph.util.Pair;
 import org.osgi.service.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eim.api.EclipseService;
 
@@ -19,7 +22,8 @@ import eim.api.EclipseService;
  */
 @Component
 public class EclipseServiceImpl implements EclipseService {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(EclipseServiceImpl.class);
 	@Override
 	public Process startProcess(String command, String workingDir, String[] args) {
 		Map<String, String> arguments = new HashMap<String, String>();
@@ -50,6 +54,9 @@ public class EclipseServiceImpl implements EclipseService {
 		try {
 			return pb.start();
 		} catch (IOException e) {
+			logger.error("There was a problem starting the the process!\n"
+					+ "Command: " + command + "\n"
+					+ e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
@@ -62,15 +69,18 @@ public class EclipseServiceImpl implements EclipseService {
 			Pair<Installation, Workspace> entry = executionEntries.get(index);
 			Path installationPath = Paths.get(entry.getElement1().eResource().getURI().toFileString()).getParent()
 					.getParent().getParent();
+			logger.debug("Installation path is " + installationPath.toAbsolutePath().toString());
 			Path workspacePath = Paths.get(entry.getElement2().eResource().getURI().toFileString()).getParent()
 					.getParent().getParent().getParent();
+			logger.debug("Workspace path is " + workspacePath.toAbsolutePath().toString());
 			System.getProperty("eclipse.launcher.name");
 			Path programPath = installationPath.resolve("eclipse.exe");
 			ArrayList<String> args = new ArrayList<String>();
 			args.add("ws=" + workspacePath.toString());
 			String[] simpleArray = new String[args.size()];
 			args.toArray(simpleArray);
-
+			
+			logger.debug("Starting " + programPath.toString() + " in working directory " + installationPath.toString() + " with arguments\n " + Arrays.toString(simpleArray));
 			startProcess(programPath.toString(), installationPath.toString(), simpleArray);
 		}
 	}

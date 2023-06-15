@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+    <!-- create appenders -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyyMMdd-HH:mm:ss.SSS} [%.20thread] [%-5level] %logger{25} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Assign loggers to appenders 
+    TRACE, DEBUG, INFO, WARN, ERROR, ALL or OFF
+    -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
