@@ -8,6 +8,20 @@ junit: \
   junit-jupiter-api
 mockito: org.mockito.mockito-all
 
+# separate build folders for windows executions - file handle issues
+target-dir  generated${if;${driver;eclipse};;/${driver}}
+bin         ${target-dir}/classes
+testbin     ${target-dir}/test-classes
+
+#-plugin.commands = \
+#   aQute.bnd.signing.JartoolSigner; \
+#       keystore=${workspace}/cnf/ext.jks; \
+#       storepass=${sign.storepass}; \
+#       keypass=${sign.keypass}; \
+#       digestalg=SHA-256
+
+#-sign: ${sign.alias}; keypass:=${sign.keypass}
+
 Bundle-Version:             ${version}.${tstamp;yyyyMMdd-HHmmss}
 
 -remoteworkspace        true

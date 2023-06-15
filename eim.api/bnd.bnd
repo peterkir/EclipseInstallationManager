@@ -5,3 +5,5 @@ Bundle-Version: ${apiVersion}.${tstamp}
 	osgi.annotation;version='7.0.0',\
 	org.eclipse.oomph.setup,\
 	org.eclipse.oomph.util
+
+Export-Package: eim.api

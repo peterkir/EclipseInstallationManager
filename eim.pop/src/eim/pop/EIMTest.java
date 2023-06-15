@@ -164,15 +164,19 @@ public class EIMTest {
 	@Test
 	public void testStartProcess() {
 		EclipseService eclService = ServiceUtils.getService(context, EclipseService.class);
-		Process p = eclService.startProcess(command, System.getProperty("user.home"), null);
+		String workingDir = System.getProperty("user.home");
+		System.out.format("#DEBUG-TEST# launching process %s in working dir %s\n", command, workingDir);
+		Process p = eclService.startProcess(command, workingDir, null);
+		System.out.println("#DEBUG-TEST# process info: " + p.info());
 		long parentPID = getPidViaRuntimeMXBean();
 		long pid = p.pid();
 
 		Optional<ProcessHandle> processHandle = ProcessHandle.of(parentPID);
 		processHandle.ifPresent(process -> {
 			process.children().forEach(child -> {
-				assertEquals(pid, child.pid());
+				System.out.format("#DEBUG-TEST# child-process %s # info %s\n", child.pid(), child.info());
 			});
+			assertTrue(process.children().filter(c -> pid == c.pid()).findFirst().isPresent());
 		});
 	}
 
@@ -206,6 +210,7 @@ public class EIMTest {
 		if (matcher.matches()) {
 			result = Long.valueOf(matcher.group(1));
 		}
+		System.out.format("#DEBUG-TEST# getPidViaRuntimeMXBean() process %s with pid %s\n", processName, result);
 		return result;
 	}
 
