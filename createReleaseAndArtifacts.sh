@@ -1,9 +1,10 @@
 #!/bin/bash
 # activate bash checks for unset vars, pipe fails
 set -eauo pipefail
-SCRIPT=$(readlink -f "$0")
-SCRIPT_DIR=$(dirname "$SCRIPT")
+script=$(readlink -f "$0")
+script_dir=$(dirname "$script")
 
+cd ${script_dir}
 
 version=$(cat version)
 apiVersion=$(cat apiVersion)
