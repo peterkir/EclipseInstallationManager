@@ -1,5 +1,10 @@
 script_dir=$(dirname $(readlink -f $0))
-workspace_dir=$(cd "${script_dir}/../.."; pwd)
+
+if [ "${CI}" = "true" ]; then
+  workspace_dir=$(cd "${script_dir}; pwd")
+else
+  workspace_dir=$(cd "${script_dir}/../.."; pwd)
+fi
 jacoco_dir=$(cd "${workspace_dir}/eim.pop/jacoco"; pwd)
 
 source_files=${jacoco_dir}/rt/source_files
