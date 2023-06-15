@@ -23,8 +23,8 @@ find . -iname "classes" \
   -type d \
   -exec cp -R {} ${class_files} \;
 
-mkdir -p ${script_dir}/reports
-java -jar  ${script_dir}/jacococli.jar \
+mkdir -p ${jacoco_dir}/reports
+java -jar  ${jacoco_dir}/jacococli.jar \
     report ${jacoco_dir}/exec/1-integration-pop_jacoco.exec \
     --sourcefiles ${source_files}/src \
     --classfiles ${class_files} \
