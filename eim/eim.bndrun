@@ -19,12 +19,12 @@
 	bnd.identity;id='org.apache.felix.gogo.shell',\
 	bnd.identity;id='eim.command',\
 	bnd.identity;id='eim.impl'
-
+	
 -runbundles: \
 	bcpg;version='[1.72.2,1.72.3)',\
 	bcprov;version='[1.72.0,1.72.1)',\
-	ch.qos.logback.classic;version='[1.2.11,1.2.12)',\
-	ch.qos.logback.core;version='[1.2.11,1.2.12)',\
+	ch.qos.logback.classic;version='[1.2.12,1.2.13)',\
+	ch.qos.logback.core;version='[1.2.12,1.2.13)',\
 	eim.api;version=snapshot,\
 	eim.command;version=snapshot,\
 	eim.impl;version=snapshot,\
