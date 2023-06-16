@@ -51,6 +51,16 @@ eclipse.platform.url     = "${eclipse.platform.baseurl}/${eclipse.version}/${ecl
         name  = ${eclipse.platform.name}; \
         url   = ${eclipse.platform.url}
 
+# Eclipse Simultaneous release 
+eclipse.simu.baseurl     = ${eclipse.url}/releases
+eclipse.simu.name        = "SimuRel_${eclipse.name}_${eclipse.simu.version}"
+eclipse.simu.url         = "${eclipse.simu.baseurl}/${eclipse.name}/${eclipse.simu.version}"
+ uncomment the following line to include the simultaneous release
+#-plugin.11.eclipse.simu: \
+#    aQute.bnd.repository.p2.provider.P2Repository; \
+#        name  = ${eclipse.simu.name}; \
+#        url   = ${eclipse.simu.url}
+
 -plugin.11.oomph.platform: \
     aQute.bnd.repository.p2.provider.P2Repository; \
         name  = "Oomph 1.25"; \

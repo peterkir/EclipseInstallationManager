@@ -1,25 +1,7 @@
--include: ${workspace}/cnf/ext/bundles.bnd
--runee: JavaSE-17
--runfw: org.eclipse.osgi;version='[3.16,4)'
+-include: ~eim.bndrun
 
-# not working with java 17 - only boot delegation is working
-#-runsystempackages: javax.xml,org.xml,org.xml.sax,org.xml.sax.helpers
-
--runproperties: \
-    launch.trace=false,\
-    launch.keep=false,\
-    \
-    org.osgi.framework.bootdelegation='org.xml.*,org.xml.sax.helpers.*',\
-    logback.configurationFile=${workspace}/eim/logback.xml,\
-    osgi.console=
-
--runrequires: \
-    ${log},\
-	bnd.identity;id='org.apache.felix.gogo.command',\
-	bnd.identity;id='org.apache.felix.gogo.shell',\
-	bnd.identity;id='eim.command',\
-	bnd.identity;id='eim.impl'
-
+-runproperties.DEBUG: \
+    logback.configurationFile=${workspace}/eim/logback-DEBUG.xml
 -runbundles: \
 	bcpg;version='[1.72.2,1.72.3)',\
 	bcprov;version='[1.72.0,1.72.1)',\
