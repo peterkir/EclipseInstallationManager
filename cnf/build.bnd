@@ -1,5 +1,6 @@
 version=$(cat;${workspace}/version)
 apiVersion=$(cat;${workspace}/apiVersion)
+trayVersion=$(cat;${workspace}/trayVersion)
 cache=${.}/cache
 
 # JUnit
@@ -23,9 +24,5 @@ testbin     ${target-dir}/test-classes
 #-sign: ${sign.alias}; keypass:=${sign.keypass}
 
 Bundle-Version:             ${version}.${tstamp;yyyyMMdd-HHmmss}
-
--remoteworkspace        true
--runfw:                 org.eclipse.osgi
--runee:                 JavaSE-11
 
 Automatic-Module-Name: ${project.name}
