@@ -9,7 +9,7 @@ pwd
 
 version=$(cat version)
 apiVersion=$(cat apiVersion)
-trayVersion="0.1.0"
+trayVersion=${version}
 tag=v${version}
 branch=$(echo ${GITHUB_REF#refs/heads/})
 

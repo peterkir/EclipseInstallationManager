@@ -13,10 +13,10 @@ Bundle-SCM: \
 
 Bundle-Developers: \
     aschin; \
-        email=alex@klib.io,\
-        name="Alexander Schindler",\
-        organization="Kirschners GmbH",\
-        organizationUrl="klib.io",\
+        email=alex@klib.io;\
+        name="Alexander Schindler";\
+        organization="Kirschners GmbH";\
+        organizationUrl="klib.io";\
         roles="architect,developer"
 
 # JUnit

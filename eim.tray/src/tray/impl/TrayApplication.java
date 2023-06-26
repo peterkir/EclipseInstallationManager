@@ -1,5 +1,7 @@
 package tray.impl;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import org.eclipse.oomph.setup.Installation;
@@ -17,6 +19,8 @@ import org.eclipse.swt.widgets.TrayItem;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eim.api.EclipseService;
 import eim.api.ListLocationService;
@@ -30,6 +34,7 @@ public class TrayApplication {
 	@Reference
 	private ListLocationService listLocSvc;
 	private Map<Integer, Pair<Installation, Workspace>> locationEntries;
+	private Logger logger = LoggerFactory.getLogger(TrayApplication.class);
 
 	public static boolean dispose = false;
 	
@@ -58,12 +63,16 @@ public class TrayApplication {
 			final Menu menu = new Menu(shell, SWT.POP_UP);
 			for (Map.Entry<Integer, Pair<Installation, Workspace>> entry : locationEntries.entrySet()) {
 				Integer key = entry.getKey();
-				Pair<Installation, Workspace> val = entry.getValue();
-				
-				String installationName = val.getElement1().getQualifiedName();
-
+				Pair<Installation, Workspace> pair = entry.getValue();
+				Path instPath = Paths.get(pair.getElement1().eResource().getURI().toFileString()).getParent().getParent()
+						.getParent().getParent();
+				logger.debug("Using " + instPath.toFile().getName() + " as menu item installation path.");
+				Path wrkspcPath = Paths.get(pair.getElement2().eResource().getURI().toFileString()).getParent().getParent().getParent()
+						.getParent();
+				logger.debug("Using " + wrkspcPath.toFile().getName() + " as menu item workspace path.");
 				MenuItem mi = new MenuItem(menu, SWT.WRAP | SWT.PUSH);
-				mi.setText(installationName);
+				String itemLabel = key + " # " + instPath.toFile().getName() + " # " + wrkspcPath.toFile().getName();
+				mi.setText(itemLabel);
 				mi.addListener(SWT.Selection, event -> eclService.startEntry(key, locationEntries));
 				if (key == 1) {
 					menu.setDefaultItem(mi);
