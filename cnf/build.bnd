@@ -3,6 +3,22 @@ apiVersion=$(cat;${workspace}/apiVersion)
 trayVersion=$(cat;${workspace}/trayVersion)
 cache=${.}/cache
 
+Bundle-License: EPL-2.0;\
+    description="This program and the accompanying materials are made avilable under the terms of the Eclipse Public License 2.0.";\
+    link="https://www.eclipse.org/legal/epl-2.0/"
+Bundle-SCM: \
+    url="https://github.com/A7exSchin/EclipseInstallationManager",\
+    connection=scm:git:https://github.com/A7exSchin/EclipseInstallationManager.git,\
+    tag=${version}
+
+Bundle-Developers: \
+    aschin; \
+        email=alex@klib.io,\
+        name="Alexander Schindler",\
+        organization="Kirschners GmbH",\
+        organizationUrl="klib.io",\
+        roles="architect,developer"
+
 # JUnit
 junit: \
   junit-jupiter,\
@@ -13,15 +29,6 @@ mockito: org.mockito.mockito-all
 target-dir  generated${if;${driver;eclipse};;/${driver}}
 bin         ${target-dir}/classes
 testbin     ${target-dir}/test-classes
-
-#-plugin.commands = \
-#   aQute.bnd.signing.JartoolSigner; \
-#       keystore=${workspace}/cnf/ext.jks; \
-#       storepass=${sign.storepass}; \
-#       keypass=${sign.keypass}; \
-#       digestalg=SHA-256
-
-#-sign: ${sign.alias}; keypass:=${sign.keypass}
 
 Bundle-Version:             ${version}.${tstamp;yyyyMMdd-HHmmss}
 
