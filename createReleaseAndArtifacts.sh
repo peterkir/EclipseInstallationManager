@@ -19,7 +19,7 @@ tag=v${trayVersion}
 branch=$(echo ${GITHUB_REF#refs/heads/})
 
 # rename jars to include the version
-mv ${github_workspace}/eim/generated/gradle/distributions/executable/eim.jar ${github_workspace}/eim/generated/gradle/distributions/executable/eim_${version}.jar
+mv ${github_workspace}/eim/generated/gradle/distributions/executable/eim.jar ${github_workspace}/eim/generated/gradle/distributions/executable/eim_${eimVersion}.jar
 mv ${github_workspace}/eim.api/generated/gradle/eim.api.jar ${github_workspace}/eim.api/generated/gradle/eim.api_${apiVersion}.jar
 
 # rename all platform versions of the tray application
@@ -30,9 +30,9 @@ mv ${github_workspace}/eim.tray/generated/gradle/distributions/executable/eim.tr
 if [[ ${branch} = "main" ]]; then
     gh release create ${tag}\
         --latest \
-        --title "Eclipse Installation Manager (EIM) v${version}" \
+        --title "Eclipse Installation Manager (EIM) ${tag}" \
         --generate-notes \
-        ${github_workspace}/eim/generated/gradle/distributions/executable/eim_${version}.jar \
+        ${github_workspace}/eim/generated/gradle/distributions/executable/eim_${eimVersion}.jar \
         ${github_workspace}/eim.api/generated/gradle/eim.api_${apiVersion}.jar \
         ${github_workspace}/eim.tray/generated/gradle/distributions/executable/eim.tray.win32.x86_64_${trayVersion}.jar \
         ${github_workspace}/eim.tray/generated/gradle/distributions/executable/eim.tray.linux.x86_64_${trayVersion}.jar \
