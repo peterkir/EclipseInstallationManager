@@ -7,10 +7,14 @@ script_dir=$(dirname "$script")
 cd ${github_workspace}
 pwd
 
-version=$(cat version)
-apiVersion=$(cat apiVersion)
-trayVersion=${version}
-tag=v${version}
+# extract versions from release files
+releaseRepo=${guthub_workspace}/cnf/release/
+
+eimVersion=$(basename $(find ${releaseRepo}/eim.impl/ -name 'eim.impl-*') .jar | cut -d'-' -f 2)
+apiVersion=$(basename $(find ${releaseRepo}/eim.api/ -name 'eim.impl-*') .jar | cut -d'-' -f 2)
+trayVersion=$(basename $(find ${releaseRepo}/eim.tray/ -name 'eim.impl-*') .jar | cut -d'-' -f 2)
+
+tag=v${trayVersion}
 branch=$(echo ${GITHUB_REF#refs/heads/})
 
 # rename jars to include the version

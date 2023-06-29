@@ -2,15 +2,10 @@ package tray.impl;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import org.eclipse.oomph.setup.Installation;
-import org.eclipse.oomph.setup.Workspace;
-import org.eclipse.oomph.util.Pair;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -26,19 +21,18 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eim.api.EclipseService;
-import eim.api.ListLocationService;
+import eim.api.EIMService;
+import eim.api.LocationCatalogEntry;
 
 @Component(immediate = true)
 public class TrayApplication {
 
 	@Reference
-	private EclipseService eclService;
-	@Reference
-	private ListLocationService listLocSvc;
-	private Map<Integer, Pair<Installation, Workspace>> locationEntries;
+	private EIMService eclService;
+
+	private LinkedList<LocationCatalogEntry> locationEntries;
 	private Logger logger = LoggerFactory.getLogger(TrayApplication.class);
-	private Map<Installation, List<Pair<Integer, Workspace>>> installationGroupedMap = new HashMap<>();
+	private LinkedHashMap<LocationCatalogEntry, LinkedList<LocationCatalogEntry>> installationGroupedMap = new LinkedHashMap<>();;
 
 	public static boolean dispose = false;
 
@@ -51,8 +45,8 @@ public class TrayApplication {
 
 	private void dataInitialization() {
 		logger.debug("Loading data");
-		listLocSvc.listLocations(null);
-		locationEntries = listLocSvc.getLocationEntries();
+		eclService.listLocations(null);
+		locationEntries = eclService.getLocationEntries();
 	}
 
 	private void createDisplay() {
@@ -70,7 +64,7 @@ public class TrayApplication {
 			logger.error("The system tray is not available!");
 		} else {
 			final TrayItem item = new TrayItem(tray, SWT.NONE);
-			item.setToolTipText("Eclipe Installation Manager");
+			item.setToolTipText("Eclipse Installation Manager");
 			item.addListener(SWT.Show, event -> System.out.println("show"));
 			item.addListener(SWT.Hide, event -> System.out.println("hide"));
 			item.addListener(SWT.Selection, event -> System.out.println("selection"));
@@ -78,31 +72,25 @@ public class TrayApplication {
 			final Menu menu = new Menu(shell, SWT.POP_UP);
 
 			installationGroupedMap.forEach((installation, workspaceList) -> {
-				Path instPath = Paths.get(installation.eResource().getURI().toFileString()).getParent().getParent()
-						.getParent().getParent();
 				if (workspaceList.size() == 1) {
 					MenuItem mi = new MenuItem(menu, SWT.WRAP | SWT.PUSH);
-					Path wrkspcPath = Paths.get(workspaceList.get(0).getElement2().eResource().getURI().toFileString())
-							.getParent().getParent().getParent().getParent();
-					Integer launchNumber = workspaceList.get(0).getElement1();
-					String itemLabel = launchNumber + " # " + instPath.toFile().getName() + " # "
-							+ wrkspcPath.toFile().getName();
+					LocationCatalogEntry workspaceCatalogEntry = workspaceList.get(0);
+					Integer launchNumber = workspaceCatalogEntry.getID();
+					String itemLabel = launchNumber + " # " + installation.getInstallationFolderName() + " # "
+							+ workspaceCatalogEntry.getWorkspaceFolderName();
 					mi.setText(itemLabel);
-					mi.addListener(SWT.Selection, event -> eclService.startEntry(launchNumber, locationEntries));
+					mi.addListener(SWT.Selection, event -> eclService.startEntry(workspaceCatalogEntry));
 				} else {
 					MenuItem mi = new MenuItem(menu, SWT.CASCADE);
-					mi.setText(instPath.toFile().getName());
+					mi.setText(installation.getInstallationFolderName());
 					Menu subMenu = new Menu(shell, SWT.DROP_DOWN);
 					mi.setMenu(subMenu);
 
-					for (Pair<Integer, Workspace> pair : workspaceList) {
+					for (LocationCatalogEntry entry : workspaceList) {
 						MenuItem subMenuItem = new MenuItem(subMenu, SWT.PUSH);
-						Path wrkspcPath = Paths
-								.get(pair.getElement2().eResource().getURI().toFileString()).getParent()
-								.getParent().getParent().getParent();
-						subMenuItem.setText(wrkspcPath.toFile().getName());
-						subMenuItem.addListener(SWT.Selection,
-								event -> eclService.startEntry(pair.getElement1(), locationEntries));
+						Integer launchNumber = entry.getID();
+						subMenuItem.setText(launchNumber + " # " + entry.getWorkspaceFolderName());
+						subMenuItem.addListener(SWT.Selection, event -> eclService.startEntry(entry));
 					}
 					mi.addListener(SWT.MouseHover, event -> subMenu.setVisible(true));
 				}
@@ -127,32 +115,54 @@ public class TrayApplication {
 	private void createMappedInstallationEntries() {
 		logger.debug("creating installation - workspaces map");
 
-		HashSet<Installation> uniqueInstallations = new HashSet<>();
-		locationEntries.forEach((entryNumber, instWorkspcPair) -> {
-			Installation installation = instWorkspcPair.getElement1();
-			uniqueInstallations.add(installation);
+		LinkedHashMap<LocationCatalogEntry, LinkedList<LocationCatalogEntry>> installationMap = new LinkedHashMap<>();
+		LinkedList<LocationCatalogEntry> installations = new LinkedList<>();
+
+		locationEntries.forEach(locationCatalogEntry -> {
+			if (!checkIfListContainsInstallation(locationCatalogEntry, installations)) {
+				logger.debug("List does not contain locationCatalogEntry "
+						+ locationCatalogEntry.getInstallationFolderName());
+				installations.add(locationCatalogEntry);
+			}
 		});
 
-		uniqueInstallations.forEach(installation -> {
-			Path installationPath = Paths.get(installation.eResource().getURI().toFileString()).getParent().getParent()
-					.getParent().getParent();
-			logger.debug("Creating entry for installation " + installationPath);
-			LinkedList<Pair<Integer, Workspace>> mappedWorkspaces = new LinkedList<>();
-			locationEntries.forEach((entryNumber, instWorkspcPair) -> {
-				Path instPathToCompare = Paths.get(instWorkspcPair.getElement1().eResource().getURI().toFileString())
-						.getParent().getParent().getParent().getParent();
-				if (0 == installationPath.compareTo(instPathToCompare)) {
-					Pair<Integer, Workspace> integerWorkspacePair = new Pair<Integer, Workspace>();
-					integerWorkspacePair.setElement1(entryNumber);
-					integerWorkspacePair.setElement2(instWorkspcPair.getElement2());
-					mappedWorkspaces.add(integerWorkspacePair);
+		for (LocationCatalogEntry installationEntry : installations) {
+			LinkedList<LocationCatalogEntry> mappedWorkspaces = new LinkedList<>();
+			locationEntries.forEach(locationCatalogEntry -> {
+				if (checkIfInstallationURIequals(installationEntry.getInstallation(),
+						locationCatalogEntry.getInstallation())) {
+					mappedWorkspaces.add(locationCatalogEntry);
 				}
-				logger.debug("Putting " + installationPath.toFile().getName() + " with Workspaces "
-						+ mappedWorkspaces.toString());
-
-				installationGroupedMap.put(installation, mappedWorkspaces);
 			});
-		});
+			installationMap.put(installationEntry, mappedWorkspaces);
+		}
+
+		installationGroupedMap.putAll(installationMap);
+
+	}
+
+	private boolean checkIfListContainsInstallation(LocationCatalogEntry entry,
+			LinkedList<LocationCatalogEntry> installationList) {
+		Installation installation1 = entry.getInstallation();
+		boolean result = false;
+
+		for (LocationCatalogEntry listEntry : installationList) {
+			if (checkIfInstallationURIequals(installation1, listEntry.getInstallation())) {
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	private boolean checkIfInstallationURIequals(Installation inst1, Installation inst2) {
+		Path path1 = Paths.get(inst1.eResource().getURI().toFileString());
+		Path path2 = Paths.get(inst2.eResource().getURI().toFileString());
+
+		boolean result = false;
+		if (path1.compareTo(path2) == 0) {
+			result = true;
+		}
+		return result;
 	}
 
 }

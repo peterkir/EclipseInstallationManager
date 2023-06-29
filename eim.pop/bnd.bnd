@@ -10,7 +10,6 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 	osgi.cmpn;version='7.0.0',\
 	org.mockito.mockito-core,\
 	org.knowhowlab.osgi.testing.all,\
-	eim.api;version=latest,\
 	org.eclipse.e4.core.di.annotations,\
 	org.eclipse.oomph.setup,\
 	org.eclipse.core.resources,\
@@ -21,7 +20,8 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 	org.eclipse.emf.ecore,\
 	org.eclipse.emf.common,\
 	org.eclipse.swt.win32.win32.x86_64,\
-	org.eclipse.oomph.base
+	org.eclipse.oomph.base,\
+	eim.api;version='1.0'
 
 -dependson: \
     eim

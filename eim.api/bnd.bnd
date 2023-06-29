@@ -1,9 +1,10 @@
-Bundle-Version: ${apiVersion}.${tstamp}
+Bundle-Version: 1.0.0.${tstamp}
 
 -baseline: *
 -buildpath: \
 	osgi.annotation;version='7.0.0',\
 	org.eclipse.oomph.setup,\
-	org.eclipse.oomph.util
+	org.eclipse.oomph.util,\
+	org.eclipse.oomph.base
 
 Export-Package: eim.api

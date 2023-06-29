@@ -7,7 +7,6 @@
 	osgi.annotation;version=latest,\
 	osgi.cmpn;version=latest,\
 	org.apache.felix.gogo.runtime;version=latest,\
-	eim.api,\
 	org.eclipse.oomph.setup,\
 	org.eclipse.oomph.util,\
 	org.eclipse.equinox.app,\
@@ -15,9 +14,10 @@
 	org.eclipse.jface,\
 	org.eclipse.oomph.base,\
 	org.eclipse.emf.ecore,\
-	org.eclipse.emf.common
+	org.eclipse.emf.common,\
+	eim.api;version='1.0'
 	
 Bundle-SymbolicName: ${project.name};singleton:=true
-Bundle-Version: ${trayVersion}.${tstamp;"yyyymmdd-HHmmss"}
+Bundle-Version: 0.3.1.${tstamp;yyyyMMdd-HHmmss}
 -privatepackage: \
     tray.impl

@@ -15,8 +15,9 @@ echo $JAVA_HOME
     --info \
     --console=plain \
     clean \
+    testrun.1-integration-pop \
     export \
-    testrun.1-integration-pop
+    release
 
 echo '### create Coverage and PoP reports'
 . ${script_dir}/eim.pop/jacoco/createCoverageReports.sh

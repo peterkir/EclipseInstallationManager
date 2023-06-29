@@ -1,6 +1,3 @@
-version=$(cat;${workspace}/version)
-apiVersion=$(cat;${workspace}/apiVersion)
-trayVersion=$(cat;${workspace}/trayVersion)
 cache=${.}/cache
 
 Bundle-License: EPL-2.0;\
@@ -9,7 +6,7 @@ Bundle-License: EPL-2.0;\
 Bundle-SCM: \
     url="https://github.com/A7exSchin/EclipseInstallationManager",\
     connection=scm:git:https://github.com/A7exSchin/EclipseInstallationManager.git,\
-    tag=${version}
+    tag=${Bundle-Version}
 
 Bundle-Developers: \
     aschin; \
@@ -30,6 +27,6 @@ target-dir  generated${if;${driver;eclipse};;/${driver}}
 bin         ${target-dir}/classes
 testbin     ${target-dir}/test-classes
 
-Bundle-Version:             ${version}.${tstamp;yyyyMMdd-HHmmss}
+Bundle-Version: 1.0.0.${tstamp;yyyyMMdd-HHmmss}
 
 Automatic-Module-Name: ${project.name}

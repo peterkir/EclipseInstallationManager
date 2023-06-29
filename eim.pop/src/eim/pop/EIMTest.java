@@ -14,7 +14,7 @@ import java.lang.management.RuntimeMXBean;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -31,7 +31,6 @@ import org.eclipse.oomph.setup.LocationCatalog;
 import org.eclipse.oomph.setup.Workspace;
 import org.eclipse.oomph.setup.impl.SetupFactoryImpl;
 import org.eclipse.oomph.setup.internal.core.util.SetupCoreUtil;
-import org.eclipse.oomph.util.Pair;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -41,8 +40,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
-import eim.api.EclipseService;
-import eim.api.ListLocationService;
+import eim.api.EIMService;
+import eim.api.LocationCatalogEntry;
 
 public class EIMTest {
 
@@ -146,19 +145,17 @@ public class EIMTest {
 	@Test
 	public void testLifeCycle() throws Exception {
 		assertBundleState(Bundle.ACTIVE, SERVICE_BUNDLE);
-		assertServiceAvailable(EclipseService.class);
+		assertServiceAvailable(EIMService.class);
 		findBundle(getBundleContext(), SERVICE_BUNDLE).stop();
-		assertServiceUnavailable(EclipseService.class, 1, TimeUnit.SECONDS);
+		assertServiceUnavailable(EIMService.class, 1, TimeUnit.SECONDS);
 		findBundle(getBundleContext(), SERVICE_BUNDLE).start();
-		EclipseService eclService = ServiceUtils.getService(context, EclipseService.class);
-		ListLocationService listLocService = ServiceUtils.getService(context, ListLocationService.class);
+		EIMService eclService = ServiceUtils.getService(context, EIMService.class);
 		assertNotNull(eclService);
-		assertNotNull(listLocService);
 	}
 
 	@Test
 	public void testStartProcess() {
-		EclipseService eclService = ServiceUtils.getService(context, EclipseService.class);
+		EIMService eclService = ServiceUtils.getService(context, EIMService.class);
 		String workingDir = System.getProperty("user.home");
 		System.out.format("#DEBUG-TEST# launching process %s in working dir %s\n", command, workingDir);
 		Process p = eclService.startProcess(command, workingDir, null);
@@ -177,10 +174,10 @@ public class EIMTest {
 
 	@Test
 	public void testListLocation() {
-		ListLocationService listLocService = ServiceUtils.getService(context, ListLocationService.class);
-		listLocService.listLocations(directory.resolve("locations.setup").toFile().getAbsolutePath());
+		EIMService eimService = ServiceUtils.getService(context, EIMService.class);
+		eimService.listLocations(directory.resolve("locations.setup").toFile().getAbsolutePath());
 
-		Map<Integer, Pair<Installation, Workspace>> entries = listLocService.getLocationEntries();
+		LinkedList<LocationCatalogEntry> entries = eimService.getLocationEntries();
 		assertTrue(entries.size() > 0);
 		assertTrue(entries.size() == 3);
 	}
