@@ -8,13 +8,14 @@ cd ${github_workspace}
 pwd
 
 # extract versions from release files
-releaseRepo=${guthub_workspace}/cnf/release/
+releaseRepo=${github_workspace}/cnf/release/
 
-eimVersion=$(basename $(find ${releaseRepo}/eim.impl/ -name 'eim.impl-*') .jar | cut -d'-' -f 2)
-apiVersion=$(basename $(find ${releaseRepo}/eim.api/ -name 'eim.impl-*') .jar | cut -d'-' -f 2)
-trayVersion=$(basename $(find ${releaseRepo}/eim.tray/ -name 'eim.impl-*') .jar | cut -d'-' -f 2)
+eimVersion=$(basename -s .jar $(find ${releaseRepo}/eim.impl/ -name 'eim.impl-*') | cut -d'-' -f 2)
+apiVersion=$(basename -s .jar $(find ${releaseRepo}/eim.api/ -name 'eim.api-*') | cut -d'-' -f 2)
+trayVersion=$(basename -s .jar $(find ${releaseRepo}/eim.tray/ -name 'eim.tray-*') | cut -d'-' -f 2)
 
 tag=v${trayVersion}
+
 branch=$(echo ${GITHUB_REF#refs/heads/})
 
 # rename jars to include the version
